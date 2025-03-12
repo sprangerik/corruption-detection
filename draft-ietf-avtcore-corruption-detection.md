@@ -271,11 +271,13 @@ For now this header extension is only defined for 4:2:0 chroma subsampling.
 // TODO: Discuss supporting other formats.
 
 In order to translate the row/column calculated from the Halton sequence into a coordinate within a given image plane, visualize the U/V (chroma) planes as being attached to the Y (luma) planes as follows:
+~~~~
     +------+---+
     |      | U |
     +  Y   +---+
     |      | V |
     +------+---+
+~~~~
 
 In pseudo code:
 
