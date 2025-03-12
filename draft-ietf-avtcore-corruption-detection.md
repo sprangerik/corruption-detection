@@ -53,14 +53,11 @@ author:
 normative:
 
 informative:
-  W3CSVC:
+  SVC:
+    target: https://www.w3.org/TR/webrtc-svc
     title: Scalable Video Coding (SVC) Extension for WebRTC
     author:
-    org: W3C
-    date: false
-    seriesinfo:
-      Web: https://www.w3.org/TR/webrtc-svc
-  
+      org: W3C
 
 --- abstract
 
@@ -224,7 +221,7 @@ If needed, a “sync message” can be added to guarantee sequence index alignme
 
 When multiple spatial layers are present within a single SSRC, the sender MUST produce a separate and independent stream of corruption detection headers for each spatial layer. This ensures that a receiver can decode and verify the highest spatial layer that is part of the stream they are receiving, and any layers culled by a middlebox does not affect the integrity of e.g. the sequence index series for that layer.
 
-When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit, e.g. the "SxTx" modes in {{?W3CSVC}}), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
+When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit, e.g. the "SxTx" modes in {{?SVC}}), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
 
 ### Sample Filtering
 
@@ -305,7 +302,7 @@ Further improvements in this area should be possible without having to make chan
 
 # Security Considerations
 
-The de facto way of encrypting RTP packets is using SRTP. // TODO: Add link
+The de facto way of encrypting RTP packets is using SRTP as defined in {{?RFC3711}}.
 Unfortunately, SRTP does not provide encryption for header extensions as they are not seen as part of the payload. That poses a serious security risk, as the corruption detection samples are in essence a very sparse encoding of the source image - so given a sufficient number of samples and a static scene an eavesdropper could rather trivially reconstruct the scene from just header extensions.
 
 While technically not required, the sender SHOULD negotiate some form of encryption that covers this header extension. The most straightforward methods is to use either {{?RFC6904}} or {{?RFC9335}}, both of which are specifically designed to allow selective encryption of sensitive RTP header extensions.
