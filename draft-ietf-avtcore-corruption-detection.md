@@ -23,7 +23,7 @@ title: "RTP Header Extension for Automatic Detection of Video Corruptions"
 abbrev: "Video Corruption Detection"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-ietf-avtcore-corruption-detection-latest
 submissiontype: IETF
 number:
 date:
@@ -41,7 +41,7 @@ venue:
   type: Working Group
   mail: avt@ietf.org
   arch: https://datatracker.ietf.org/wg/avtcore
-  github: USER/REPO
+  github: sprangerik/corruption-detection
   latest: https://github.com/sprangerik/corruption-detection/blob/main/draft-ietf-avtcore-corruption-detection.md
 
 author:
