@@ -1326,13 +1326,13 @@ or leave it as a proprietary extension.<a href="#section-4-3" class="pilcrow">¶
           </h4>
 <p id="section-4.1.1-1">Data layout of a corruption-detection header extension, using a One-Byte header (see <span>[<a href="#RFC5285" class="cite xref">RFC5285</a>]</span>) section 4.2:
 ~~~~
-  0                   1                   2                   3
-  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |  ID   | len=7 |B|  seq index  |    std dev    | Y err | UV err|
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |    sample 0   |    sample 1   |    …   up to sample &lt;=12      |
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  ID   | len=7 |B|  seq index  |    std dev    | Y err | UV err|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    sample 0   |    sample 1   |    …   up to sample &lt;=12      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~~
 // TODO: Discuss use of Two-Byte header extensions.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
 </section>
