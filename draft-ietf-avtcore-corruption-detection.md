@@ -221,7 +221,8 @@ If needed, a “sync message” can be added to guarantee sequence index alignme
 
 When multiple spatial layers are present within a single SSRC, the sender MUST produce a separate and independent stream of corruption detection headers for each spatial layer. This ensures that a receiver can decode and verify the highest spatial layer that is part of the stream they are receiving, and any layers culled by a middlebox does not affect the integrity of e.g. the sequence index series for that layer.
 
-When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit, e.g. the "SxTx" modes in {{?SVC}}), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
+When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit, e.g. the "SxTx" modes in the W3C SVC spec), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
+// TODO: Get the ref to work
 
 ### Sample Filtering
 
