@@ -394,7 +394,8 @@ Table of Contents
    In order to translate the row/column calculated from the Halton
    sequence into a coordinate within a given image plane, visualize the
    U/V (chroma) planes as being attached to the Y (luma) planes as
-   follows: +------+---+ | | U | + Y +---+ | | V | +------+---+
+   follows: ~~~~ +------+---+ | | U | + Y +---+ | | V | +------+---+
+   ~~~~
 
    In pseudo code:
 
