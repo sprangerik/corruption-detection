@@ -128,10 +128,22 @@ Data layout of a corruption-detection header extension, using a One-Byte header 
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     |  ID   | len=7 |B|  seq index  |    std dev    | Y err | UV err|
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-    |    sample 0   |    sample 1   |    …   up to sample <=12      |
+    |    sample 0   |    sample 1   |    ... up to sample <= 12     |
     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-// TODO: Discuss use of Two-Byte header extensions.
+
+Data layout of a corruption-detection header extension, using a Two-Byte header (see {{!RFC5285}}) section 4.3:
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |      ID       |     L=0       |  ID   | len=7 |B|  seq index  |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |    std dev    | Y err | UV err|    sample 0   |    sample 1   |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                   ...   up to sample <= 255                   |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
 
 ### Data layout details
 
@@ -189,14 +201,14 @@ In pseudo code, the Halton sequence can implemented as follows:
 Inputs: index i, base b
 Where b is 2 when calculating the row (y-axis) and 3 when calculating the column (x-axis)
 
-  f = 1;
-  r = 0;
-  while i > 0 do {
-    f = f / b;
-    r = r + f * (i mod b);
-    i = floor(i / b);
-  }
-  return r;  // Coordinate component.
+    f = 1;
+    r = 0;
+    while i > 0 do {
+      f = f / b;
+      r = r + f * (i mod b);
+      i = floor(i / b);
+    }
+    return r;  // Coordinate component.
 
 #### Sequence Index Counter
 
@@ -238,20 +250,20 @@ Note that this processing is done on a per-image-plane basis.
 
 In pseudo-code, that means we get the following:
 
-  // Translate 8bit header value to floating point.
-  stddev = header.std_dev * (40.0 / 255);
-  // Max number of samples away from the center.
-  max_d = ceil(sqrt(-2.0 * ln(0.2) * stddev^2) - 1;
-  sample_sum = 0;
-  weight_sum = 0;
-  for (y = max(0, row - max_d) to min(plane_height, row + max_d) {
-    for (x = max(0, col - max_d) to min(plane_width, col + max_d) {
-      weight = e^(-1 * ((y - row)^2 + (x - col)^2) / (2 * stddev^2));
-      sample_sum += SampleAt(x, y) * weight;
-      weight_sum += weight;
+    // Translate 8bit header value to floating point.
+    stddev = header.std_dev * (40.0 / 255);
+    // Max number of samples away from the center.
+    max_d = ceil(sqrt(-2.0 * ln(0.2) * stddev^2) - 1;
+    sample_sum = 0;
+    weight_sum = 0;
+    for (y = max(0, row - max_d) to min(plane_height, row + max_d) {
+      for (x = max(0, col - max_d) to min(plane_width, col + max_d) {
+        weight = e^(-1 * ((y - row)^2 + (x - col)^2) / (2 * stddev^2));
+        sample_sum += SampleAt(x, y) * weight;
+        weight_sum += weight;
+      }
     }
-  }
-  filtered_sample = sample_sum / weight_sum;
+    filtered_sample = sample_sum / weight_sum;
 
 ### Handling of Image Planes
 
@@ -259,24 +271,24 @@ For now this header extension is only defined for 4:2:0 chroma subsampling.
 // TODO: Discuss supporting other formats.
 
 In order to translate the row/column calculated from the Halton sequence into a coordinate within a given image plane, visualize the U/V (chroma) planes as being attached to the Y (luma) planes as follows:
-+------+---+
-|      | U |
-+  Y   +---+
-|      | V |
-+------+---+
+    +------+---+
+    |      | U |
+    +  Y   +---+
+    |      | V |
+    +------+---+
 
 In pseudo code:
 
-  row = GetHaltonSequence(seq_index, /*base=*/2) * image_height;
-  col = GetHaltonSequence(seq_index, /*base=*/3) * image_width * 1.5;
+    row = GetHaltonSequence(seq_index, /*base=*/2) * image_height;
+    col = GetHaltonSequence(seq_index, /*base=*/3) * image_width * 1.5;
 
-  if (col < image_width) {
-    HandleSample(Y_PLANE, row, col);
-  } else if (row < image_height / 2) {
-    HandleSample(U_PLANE, row, col - image_width);
-  } else {
-    HandleSample(V_PLANE, row - (image_height / 2), col - image_width);
-  }
+    if (col < image_width) {
+      HandleSample(Y_PLANE, row, col);
+    } else if (row < image_height / 2) {
+      HandleSample(U_PLANE, row, col - image_width);
+    } else {
+      HandleSample(V_PLANE, row - (image_height / 2), col - image_width);
+    }
 
 ### Allowed Error Thresholds
 
