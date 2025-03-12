@@ -348,9 +348,10 @@ Table of Contents
 
    When using a scalability mode where a higher spatial layer uses
    inter-layer prediction (prediction between frames belonging to the
-   same temporal unit), then the frame should be treated as a key-frame
-   if any frame in the dependency chain within that temporal layer is a
-   key-frame.
+   same temporal unit, e.g. the "SxTx" modes in the W3C SVC spec), then
+   the frame should be treated as a key-frame if any frame in the
+   dependency chain within that temporal layer is a key-frame.  // TODO:
+   Get the ref to work
 
 4.2.4.  Sample Filtering
 
@@ -394,8 +395,9 @@ Table of Contents
    In order to translate the row/column calculated from the Halton
    sequence into a coordinate within a given image plane, visualize the
    U/V (chroma) planes as being attached to the Y (luma) planes as
-   follows: ~~~~ +------+---+ | | U | + Y +---+ | | V | +------+---+
-   ~~~~
+   follows:
+
+   ~~~ < +------+---+ | | U | + Y +---+ | | V | +------+---+ > ~~~
 
    In pseudo code:
 
@@ -457,13 +459,14 @@ Table of Contents
 
 5.  Security Considerations
 
-   The de facto way of encrypting RTP packets is using SRTP. // TODO:
-   Add link Unfortunately, SRTP does not provide encryption for header
-   extensions as they are not seen as part of the payload.  That poses a
-   serious security risk, as the corruption detection samples are in
-   essence a very sparse encoding of the source image - so given a
-   sufficient number of samples and a static scene an eavesdropper could
-   rather trivially reconstruct the scene from just header extensions.
+   The de facto way of encrypting RTP packets is using SRTP as defined
+   in [RFC3711].  Unfortunately, SRTP does not provide encryption for
+   header extensions as they are not seen as part of the payload.  That
+   poses a serious security risk, as the corruption detection samples
+   are in essence a very sparse encoding of the source image - so given
+   a sufficient number of samples and a static scene an eavesdropper
+   could rather trivially reconstruct the scene from just header
+   extensions.
 
    While technically not required, the sender SHOULD negotiate some form
    of encryption that covers this header extension.  The most
@@ -500,6 +503,11 @@ Table of Contents
 
 7.2.  Informative References
 
+   [RFC3711]  Baugher, M., McGrew, D., Naslund, M., Carrara, E., and K.
+              Norrman, "The Secure Real-time Transport Protocol (SRTP)",
+              RFC 3711, DOI 10.17487/RFC3711, March 2004,
+              <https://www.rfc-editor.org/rfc/rfc3711>.
+
    [RFC6904]  Lennox, J., "Encryption of Header Extensions in the Secure
               Real-time Transport Protocol (SRTP)", RFC 6904,
               DOI 10.17487/RFC6904, April 2013,
@@ -513,6 +521,9 @@ Table of Contents
               Encrypting RTP Header Extensions and Contributing
               Sources", RFC 9335, DOI 10.17487/RFC9335, January 2023,
               <https://www.rfc-editor.org/rfc/rfc9335>.
+
+   [SVC]      W3C, "Scalable Video Coding (SVC) Extension for WebRTC",
+              n.d., <https://www.w3.org/TR/webrtc-svc>.
 
 Acknowledgments
 

@@ -7,10 +7,7 @@
 <title>RTP Header Extension for Automatic Detection of Video Corruptions</title>
 <meta content="Erik Språng" name="author">
 <meta content="
-       This document describes an RTP header extensions that can be use to carry select filtered samples from a video frame
-together with metrics relating to the expected distortions caused by lossy compression of said frame. This data allows
-a receiver to validate that the output from a decoder matches the frame the went into the encoder on the remote -
-i.e. validating that the video pipeline is in a correct state free of any video corruptions. 
+       This document describes an RTP header extensions that can be use to carry select filtered samples from a video frame together with metrics relating to the expected distortions caused by lossy compression of said frame. This data allows a receiver to validate that the output from a decoder matches the frame the went into the encoder on the remote - i.e. validating that the video pipeline is in a correct state free of any video corruptions. 
     " name="description">
 <meta content="xml2rfc 3.28.0" name="generator">
 <meta content="RTP" name="keyword">
@@ -1085,10 +1082,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">RTP Header Extension for Automatic Detection of Video Corruptions</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes an RTP header extensions that can be use to carry select filtered samples from a video frame
-together with metrics relating to the expected distortions caused by lossy compression of said frame. This data allows
-a receiver to validate that the output from a decoder matches the frame the went into the encoder on the remote -
-i.e. validating that the video pipeline is in a correct state free of any video corruptions.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document describes an RTP header extensions that can be use to carry select filtered samples from a video frame together with metrics relating to the expected distortions caused by lossy compression of said frame. This data allows a receiver to validate that the output from a decoder matches the frame the went into the encoder on the remote - i.e. validating that the video pipeline is in a correct state free of any video corruptions.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1243,15 +1237,8 @@ i.e. validating that the video pipeline is in a correct state free of any video 
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The Corruption Detection (sometimes referred to as automatic corruption detection or ACD) extension is intended to be
-a part of a system that allows estimating a likelihood that a video transmission is in a valid state. That is, the
-input to the video encoder on the send side corresponds to the output of the video decoder on the receive side with
-the only difference being the expected distortions from lossy compression.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">The goal is to be able to detect outright coding errors caused by things such as bugs in encoder/decoders, malformed
-packetization data, incorrect relay decisions in SFU-type servers, incorrect handling of packet loss/reordering, and
-so forth. This should be accomplished with a high signal-to-noise ratio while consuming a minimum of resources in
-terms of bandwidth and/or computation. It should be noted that it is not a goal to be able to e.g. gauge general
-video quality using this method.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-1">The Corruption Detection (sometimes referred to as automatic corruption detection or ACD) extension is intended to be a part of a system that allows estimating a likelihood that a video transmission is in a valid state. That is, the input to the video encoder on the send side corresponds to the output of the video decoder on the receive side with the only difference being the expected distortions from lossy compression.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The goal is to be able to detect outright coding errors caused by things such as bugs in encoder/decoders, malformed packetization data, incorrect relay decisions in SFU-type servers, incorrect handling of packet loss/reordering, and so forth. This should be accomplished with a high signal-to-noise ratio while consuming a minimum of resources in terms of bandwidth and/or computation. It should be noted that it is not a goal to be able to e.g. gauge general video quality using this method.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">This is accomplished in two steps. On the sender side:<a href="#section-1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-4.1">
@@ -1295,13 +1282,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-applicability">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-applicability" class="section-name selfRef">Applicability</a>
       </h2>
-<p id="section-3-1">The Corruption Detection extension can be used to validate the correctness of any video pipeline in an end-to-end
-manner, as long as there is no termination of the bitstream in the process. It is designed to be codec agnostic.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">In terms of <span>[<a href="#RFC7667" class="cite xref">RFC7667</a>]</span>, any Point-to-Point or Transport Translator topologies can be used. The header extension
-just needs to be propagated together with the media packet until the decode stage. If however a Media Translator
-is used, the header extension needs to be extracted at the time of decoding there (e.g during transcoding). If
-corruption detection is desired to the end user, then a new Corruption Detection header extension needs to be
-created as part of the middlebox encoding step and thet can then be carried forward.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-1">The Corruption Detection extension can be used to validate the correctness of any video pipeline in an end-to-end manner, as long as there is no termination of the bitstream in the process. It is designed to be codec agnostic.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">In terms of <span>[<a href="#RFC7667" class="cite xref">RFC7667</a>]</span>, any Point-to-Point or Transport Translator topologies can be used. The header extension just needs to be propagated together with the media packet until the decode stage. If however a Media Translator is used, the header extension needs to be extracted at the time of decoding there (e.g during transcoding). If corruption detection is desired to the end user, then a new Corruption Detection header extension needs to be created as part of the middlebox encoding step and thet can then be carried forward.<a href="#section-3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="corruption-detection">
@@ -1311,9 +1293,7 @@ created as part of the middlebox encoding step and thet can then be carried forw
       </h2>
 <p id="section-4-1"><em>Name:</em>  “Corruption Detection”; “Extension for Automatic Detection of Video Corruptions”<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2"><em>Formal name:</em> http://www.webrtc.org/experiments/rtp-hdrext/corruption-detection<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3"><em>Status:</em> This extension is defined here to allow for experimentation. Experience with the experiment has shown
-that it is useful; this draft therefore presents it to the IETF for consideration of whether to standardize it
-or leave it as a proprietary extension.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-3"><em>Status:</em> This extension is defined here to allow for experimentation. Experience with the experiment has shown that it is useful; this draft therefore presents it to the IETF for consideration of whether to standardize it or leave it as a proprietary extension.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <div id="rtp-header-extension-format">
 <section id="section-4.1">
         <h3 id="name-rtp-header-extension-format">
@@ -1407,8 +1387,7 @@ If B is not set: The 7 LSB of the true index. The 7 most significant bits should
             <h5 id="name-sample-n-8-bits">
 <a href="#section-4.1.2.6" class="section-number selfRef">4.1.2.6. </a><a href="#name-sample-n-8-bits" class="section-name selfRef">Sample N (8 bits)</a>
             </h5>
-<p id="section-4.1.2.6-1">The N:th filtered sample from the input image. Each sample represents a new point in one of the image planes, the plane and coordinates
-being determined by index into the Halton sequence (starting at seq# index and is incremented by one for each sample).
+<p id="section-4.1.2.6-1">The N:th filtered sample from the input image. Each sample represents a new point in one of the image planes, the plane and coordinates being determined by index into the Halton sequence (starting at seq# index and is incremented by one for each sample).
 Each sample has gone through a Gaussian filter with the std dev specified above. The samples have been floored to the nearest integer.<a href="#section-4.1.2.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1419,8 +1398,7 @@ Each sample has gone through a Gaussian filter with the std dev specified above.
           <h4 id="name-synchronization-message">
 <a href="#section-4.1.3" class="section-number selfRef">4.1.3. </a><a href="#name-synchronization-message" class="section-name selfRef">Synchronization Message</a>
           </h4>
-<p id="section-4.1.3-1">A special case is the so-called “synchronization” message. Such a message only contains the first byte. They are used to keep the sender
-and receiver in sync even if no “full” message has been received for a while. Such messages <span class="bcp14">MUST NOT</span> be sent on droppable frames.<a href="#section-4.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-1">A special case is the so-called “synchronization” message. Such a message only contains the first byte. They are used to keep the sender and receiver in sync even if no “full” message has been received for a while. Such messages <span class="bcp14">MUST NOT</span> be sent on droppable frames.<a href="#section-4.1.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1491,7 +1469,8 @@ return r;  // Coordinate component.
 <a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-spatial-layer-consideration" class="section-name selfRef">Spatial Layer Considerations</a>
           </h4>
 <p id="section-4.2.3-1">When multiple spatial layers are present within a single SSRC, the sender <span class="bcp14">MUST</span> produce a separate and independent stream of corruption detection headers for each spatial layer. This ensures that a receiver can decode and verify the highest spatial layer that is part of the stream they are receiving, and any layers culled by a middlebox does not affect the integrity of e.g. the sequence index series for that layer.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.3-2">When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame.<a href="#section-4.2.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-2">When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit, e.g. the "SxTx" modes in the W3C SVC spec), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
+// TODO: Get the ref to work<a href="#section-4.2.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sample-filtering">
@@ -1531,16 +1510,18 @@ filtered_sample = sample_sum / weight_sum;
           </h4>
 <p id="section-4.2.5-1">For now this header extension is only defined for 4:2:0 chroma subsampling.
 // TODO: Discuss supporting other formats.<a href="#section-4.2.5-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.5-2">In order to translate the row/column calculated from the Halton sequence into a coordinate within a given image plane, visualize the U/V (chroma) planes as being attached to the Y (luma) planes as follows:
-~~~~
+<p id="section-4.2.5-2">In order to translate the row/column calculated from the Halton sequence into a coordinate within a given image plane, visualize the U/V (chroma) planes as being attached to the Y (luma) planes as follows:<a href="#section-4.2.5-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.5-3">~~~
+   &lt;
     +------+---+
     |      | U |
     +  Y   +---+
     |      | V |
     +------+---+
-~~~~<a href="#section-4.2.5-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.5-3">In pseudo code:<a href="#section-4.2.5-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.2.5-4">
+    &gt;
+   ~~~<a href="#section-4.2.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.5-4">In pseudo code:<a href="#section-4.2.5-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2.5-5">
 <pre>
 row = GetHaltonSequence(seq_index, /*base=*/2) * image_height;
 col = GetHaltonSequence(seq_index, /*base=*/3) * image_width * 1.5;
@@ -1552,7 +1533,7 @@ if (col &lt; image_width) {
 } else {
   HandleSample(V_PLANE, row - (image_height / 2), col - image_width);
 }
-</pre><a href="#section-4.2.5-4" class="pilcrow">¶</a>
+</pre><a href="#section-4.2.5-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1593,7 +1574,7 @@ if (col &lt; image_width) {
       <h2 id="name-security-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-5-1">The de facto way of encrypting RTP packets is using SRTP. // TODO: Add link
+<p id="section-5-1">The de facto way of encrypting RTP packets is using SRTP as defined in <span>[<a href="#RFC3711" class="cite xref">RFC3711</a>]</span>.
 Unfortunately, SRTP does not provide encryption for header extensions as they are not seen as part of the payload. That poses a serious security risk, as the corruption detection samples are in essence a very sparse encoding of the source image - so given a sufficient number of samples and a static scene an eavesdropper could rather trivially reconstruct the scene from just header extensions.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">While technically not required, the sender <span class="bcp14">SHOULD</span> negotiate some form of encryption that covers this header extension. The most straightforward methods is to use either <span>[<a href="#RFC6904" class="cite xref">RFC6904</a>]</span> or <span>[<a href="#RFC9335" class="cite xref">RFC9335</a>]</span>, both of which are specifically designed to allow selective encryption of sensitive RTP header extensions.<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
@@ -1639,6 +1620,10 @@ Unfortunately, SRTP does not provide encryption for header extensions as they ar
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="RFC3711">[RFC3711]</dt>
+        <dd>
+<span class="refAuthor">Baugher, M.</span>, <span class="refAuthor">McGrew, D.</span>, <span class="refAuthor">Naslund, M.</span>, <span class="refAuthor">Carrara, E.</span>, and <span class="refAuthor">K. Norrman</span>, <span class="refTitle">"The Secure Real-time Transport Protocol (SRTP)"</span>, <span class="seriesInfo">RFC 3711</span>, <span class="seriesInfo">DOI 10.17487/RFC3711</span>, <time datetime="2004-03" class="refDate">March 2004</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc3711">https://www.rfc-editor.org/rfc/rfc3711</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC6904">[RFC6904]</dt>
         <dd>
 <span class="refAuthor">Lennox, J.</span>, <span class="refTitle">"Encryption of Header Extensions in the Secure Real-time Transport Protocol (SRTP)"</span>, <span class="seriesInfo">RFC 6904</span>, <span class="seriesInfo">DOI 10.17487/RFC6904</span>, <time datetime="2013-04" class="refDate">April 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6904">https://www.rfc-editor.org/rfc/rfc6904</a>&gt;</span>. </dd>
@@ -1648,8 +1633,12 @@ Unfortunately, SRTP does not provide encryption for header extensions as they ar
 <span class="refAuthor">Westerlund, M.</span> and <span class="refAuthor">S. Wenger</span>, <span class="refTitle">"RTP Topologies"</span>, <span class="seriesInfo">RFC 7667</span>, <span class="seriesInfo">DOI 10.17487/RFC7667</span>, <time datetime="2015-11" class="refDate">November 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7667">https://www.rfc-editor.org/rfc/rfc7667</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9335">[RFC9335]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Uberti, J.</span>, <span class="refAuthor">Jennings, C.</span>, and <span class="refAuthor">S. Murillo</span>, <span class="refTitle">"Completely Encrypting RTP Header Extensions and Contributing Sources"</span>, <span class="seriesInfo">RFC 9335</span>, <span class="seriesInfo">DOI 10.17487/RFC9335</span>, <time datetime="2023-01" class="refDate">January 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9335">https://www.rfc-editor.org/rfc/rfc9335</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SVC">[SVC]</dt>
+      <dd>
+<span class="refAuthor">W3C</span>, <span class="refTitle">"Scalable Video Coding (SVC) Extension for WebRTC"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.w3.org/TR/webrtc-svc">https://www.w3.org/TR/webrtc-svc</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
