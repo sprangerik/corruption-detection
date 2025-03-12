@@ -53,29 +53,26 @@ author:
 normative:
 
 informative:
-
+  W3CSVC:
+    title: Scalable Video Coding (SVC) Extension for WebRTC
+    author:
+    org: W3C
+    date: false
+    seriesinfo:
+      Web: https://www.w3.org/TR/webrtc-svc
+  
 
 --- abstract
 
-This document describes an RTP header extensions that can be use to carry select filtered samples from a video frame
-together with metrics relating to the expected distortions caused by lossy compression of said frame. This data allows
-a receiver to validate that the output from a decoder matches the frame the went into the encoder on the remote -
-i.e. validating that the video pipeline is in a correct state free of any video corruptions.
+This document describes an RTP header extensions that can be use to carry select filtered samples from a video frame together with metrics relating to the expected distortions caused by lossy compression of said frame. This data allows a receiver to validate that the output from a decoder matches the frame the went into the encoder on the remote - i.e. validating that the video pipeline is in a correct state free of any video corruptions.
 
 --- middle
 
 # Introduction
 
-The Corruption Detection (sometimes referred to as automatic corruption detection or ACD) extension is intended to be
-a part of a system that allows estimating a likelihood that a video transmission is in a valid state. That is, the
-input to the video encoder on the send side corresponds to the output of the video decoder on the receive side with
-the only difference being the expected distortions from lossy compression.
+The Corruption Detection (sometimes referred to as automatic corruption detection or ACD) extension is intended to be a part of a system that allows estimating a likelihood that a video transmission is in a valid state. That is, the input to the video encoder on the send side corresponds to the output of the video decoder on the receive side with the only difference being the expected distortions from lossy compression.
 
-The goal is to be able to detect outright coding errors caused by things such as bugs in encoder/decoders, malformed
-packetization data, incorrect relay decisions in SFU-type servers, incorrect handling of packet loss/reordering, and
-so forth. This should be accomplished with a high signal-to-noise ratio while consuming a minimum of resources in
-terms of bandwidth and/or computation. It should be noted that it is not a goal to be able to e.g. gauge general
-video quality using this method.
+The goal is to be able to detect outright coding errors caused by things such as bugs in encoder/decoders, malformed packetization data, incorrect relay decisions in SFU-type servers, incorrect handling of packet loss/reordering, and so forth. This should be accomplished with a high signal-to-noise ratio while consuming a minimum of resources in terms of bandwidth and/or computation. It should be noted that it is not a goal to be able to e.g. gauge general video quality using this method.
 
 This is accomplished in two steps. On the sender side:
 
@@ -98,14 +95,9 @@ subtracting the allowed error from each sample pair.
 
 # Applicability
 
-The Corruption Detection extension can be used to validate the correctness of any video pipeline in an end-to-end
-manner, as long as there is no termination of the bitstream in the process. It is designed to be codec agnostic.
+The Corruption Detection extension can be used to validate the correctness of any video pipeline in an end-to-end manner, as long as there is no termination of the bitstream in the process. It is designed to be codec agnostic.
 
-In terms of {{?RFC7667}}, any Point-to-Point or Transport Translator topologies can be used. The header extension
-just needs to be propagated together with the media packet until the decode stage. If however a Media Translator
-is used, the header extension needs to be extracted at the time of decoding there (e.g during transcoding). If
-corruption detection is desired to the end user, then a new Corruption Detection header extension needs to be
-created as part of the middlebox encoding step and thet can then be carried forward.
+In terms of {{?RFC7667}}, any Point-to-Point or Transport Translator topologies can be used. The header extension just needs to be propagated together with the media packet until the decode stage. If however a Media Translator is used, the header extension needs to be extracted at the time of decoding there (e.g during transcoding). If corruption detection is desired to the end user, then a new Corruption Detection header extension needs to be created as part of the middlebox encoding step and thet can then be carried forward.
 
 # Corruption Detection
 
@@ -113,9 +105,7 @@ created as part of the middlebox encoding step and thet can then be carried forw
 
 *Formal name:* http://www.webrtc.org/experiments/rtp-hdrext/corruption-detection
 
-*Status:* This extension is defined here to allow for experimentation. Experience with the experiment has shown
-that it is useful; this draft therefore presents it to the IETF for consideration of whether to standardize it
-or leave it as a proprietary extension.
+*Status:* This extension is defined here to allow for experimentation. Experience with the experiment has shown that it is useful; this draft therefore presents it to the IETF for consideration of whether to standardize it or leave it as a proprietary extension.
 
 ## RTP header extension format
 
@@ -175,14 +165,12 @@ The allowed error for the chroma channels.
 
 #### Sample N (8 bits)
 
-The N:th filtered sample from the input image. Each sample represents a new point in one of the image planes, the plane and coordinates
-being determined by index into the Halton sequence (starting at seq# index and is incremented by one for each sample).
+The N:th filtered sample from the input image. Each sample represents a new point in one of the image planes, the plane and coordinates being determined by index into the Halton sequence (starting at seq# index and is incremented by one for each sample).
 Each sample has gone through a Gaussian filter with the std dev specified above. The samples have been floored to the nearest integer.
 
 ### Synchronization Message
 
-A special case is the so-called “synchronization” message. Such a message only contains the first byte. They are used to keep the sender
-and receiver in sync even if no “full” message has been received for a while. Such messages MUST NOT be sent on droppable frames.
+A special case is the so-called “synchronization” message. Such a message only contains the first byte. They are used to keep the sender and receiver in sync even if no “full” message has been received for a while. Such messages MUST NOT be sent on droppable frames.
 
 ## Details of Operation
 
@@ -236,7 +224,7 @@ If needed, a “sync message” can be added to guarantee sequence index alignme
 
 When multiple spatial layers are present within a single SSRC, the sender MUST produce a separate and independent stream of corruption detection headers for each spatial layer. This ensures that a receiver can decode and verify the highest spatial layer that is part of the stream they are receiving, and any layers culled by a middlebox does not affect the integrity of e.g. the sequence index series for that layer.
 
-When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
+When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit, e.g. the "SxTx" modes in {{?W3CSVC}}), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
 
 ### Sample Filtering
 
@@ -271,13 +259,16 @@ For now this header extension is only defined for 4:2:0 chroma subsampling.
 // TODO: Discuss supporting other formats.
 
 In order to translate the row/column calculated from the Halton sequence into a coordinate within a given image plane, visualize the U/V (chroma) planes as being attached to the Y (luma) planes as follows:
-~~~~
+
+   ~~~
+   <
     +------+---+
     |      | U |
     +  Y   +---+
     |      | V |
     +------+---+
-~~~~
+    >
+   ~~~
 
 In pseudo code:
 
