@@ -4,12 +4,12 @@
 
 avtcore WG                                                     E. Språng
 Internet-Draft                                                    Google
-Intended status: Informational                             12 March 2025
-Expires: 13 September 2025
+Intended status: Informational                             16 March 2025
+Expires: 17 September 2025
 
 
    RTP Header Extension for Automatic Detection of Video Corruptions
-             draft-ietf-avtcore-corruption-detection-latest
+              draft-sprang-avtcore-corruption-detection-00
 
 Abstract
 
@@ -27,9 +27,9 @@ About This Document
 
    The latest revision of this draft can be found at
    https://github.com/sprangerik/corruption-detection/blob/main/draft-
-   ietf-avtcore-corruption-detection.md.  Status information for this
-   document may be found at https://datatracker.ietf.org/doc/draft-ietf-
-   avtcore-corruption-detection/.
+   sprang-avtcore-corruption-detection.md.  Status information for this
+   document may be found at https://datatracker.ietf.org/doc/draft-
+   sprang-avtcore-corruption-detection/.
 
    Discussion of this document takes place on the avtcore WG Working
    Group mailing list (mailto:avt@ietf.org), which is archived at
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 September 2025.
+   This Internet-Draft will expire on 17 September 2025.
 
 Copyright Notice
 
@@ -164,8 +164,8 @@ Table of Contents
 
 4.  Corruption Detection
 
-   _Name:_ “Corruption Detection”; “Extension for Automatic Detection of
-   Video Corruptions”
+   _Name:_ "Corruption Detection"; "Extension for Automatic Detection of
+   Video Corruptions"
 
    _Formal name:_ http://www.webrtc.org/experiments/rtp-hdrext/
    corruption-detection
@@ -251,9 +251,9 @@ Table of Contents
 
 4.1.3.  Synchronization Message
 
-   A special case is the so-called “synchronization” message.  Such a
+   A special case is the so-called "synchronization" message.  Such a
    message only contains the first byte.  They are used to keep the
-   sender and receiver in sync even if no “full” message has been
+   sender and receiver in sync even if no "full" message has been
    received for a while.  Such messages MUST NOT be sent on droppable
    frames.
 
@@ -332,7 +332,7 @@ Table of Contents
    droppable frames, otherwise the most significant bits may come out of
    sync.
 
-   If needed, a “sync message” can be added to guarantee sequence index
+   If needed, a "sync message" can be added to guarantee sequence index
    alignment even if no samples are available.  This is done by sending
    a truncated message containing just B and the sequence index.
 
@@ -348,10 +348,9 @@ Table of Contents
 
    When using a scalability mode where a higher spatial layer uses
    inter-layer prediction (prediction between frames belonging to the
-   same temporal unit, e.g. the "SxTx" modes in the W3C SVC spec), then
-   the frame should be treated as a key-frame if any frame in the
-   dependency chain within that temporal layer is a key-frame.  // TODO:
-   Get the ref to work
+   same temporal unit, e.g. the "SxTx" modes in the W3C [SVC] spec),
+   then the frame should be treated as a key-frame if any frame in the
+   dependency chain within that temporal layer is a key-frame.
 
 4.2.4.  Sample Filtering
 
@@ -397,7 +396,11 @@ Table of Contents
    U/V (chroma) planes as being attached to the Y (luma) planes as
    follows:
 
-   ~~~ < +------+---+ | | U | + Y +---+ | | V | +------+---+ > ~~~
+   +------+---+
+   |      | U |
+   +  Y   +---+
+   |      | V |
+   +------+---+
 
    In pseudo code:
 
@@ -414,7 +417,7 @@ Table of Contents
 
 4.2.6.  Allowed Error Thresholds
 
-   The header extension contains two fields for an “allowed error”; one
+   The header extension contains two fields for an "allowed error"; one
    for the luma channel and one for the chrome channels.  The two values
    allow for accommodating different spatial resolutions and thus
    different error magnitudes for the respective image planes.
@@ -435,7 +438,7 @@ Table of Contents
    should determine appropriate thresholds, but a straightforward way is
    to look at the QP and codec type as this translates roughly the
    expected compression distortion.  Individual implementations may
-   exhibit better or worse performance than an “average” encoder
+   exhibit better or worse performance than an "average" encoder
    implementation for a given codec type - so a sender is encouraged to
    compensate for this if the implementation is far outside the expected
    bounds based on averages.
@@ -447,7 +450,7 @@ Table of Contents
    to try and use the 99.5% percentile aspect and use a simple
    statistical method to estimate the probability of this magnitude of
    error with a given confidence interval - in practice that has proven
-   tricky due to the number outliers that don’t quite follow a normal
+   tricky due to the number outliers that don't quite follow a normal
    distribution.
 
    In practice, it has been found that just taking the sum of all
