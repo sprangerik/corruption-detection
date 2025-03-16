@@ -23,7 +23,7 @@ title: "RTP Header Extension for Automatic Detection of Video Corruptions"
 abbrev: "Video Corruption Detection"
 category: info
 
-docname: draft-ietf-avtcore-corruption-detection-latest
+docname: draft-sprang-avtcore-corruption-detection-00
 submissiontype: IETF
 number:
 date:
@@ -42,7 +42,7 @@ venue:
   mail: avt@ietf.org
   arch: https://datatracker.ietf.org/wg/avtcore
   github: sprangerik/corruption-detection
-  latest: https://github.com/sprangerik/corruption-detection/blob/main/draft-ietf-avtcore-corruption-detection.md
+  latest: https://github.com/sprangerik/corruption-detection/blob/main/draft-sprang-avtcore-corruption-detection.md
 
 author:
  -
@@ -57,7 +57,7 @@ informative:
     target: https://www.w3.org/TR/webrtc-svc
     title: Scalable Video Coding (SVC) Extension for WebRTC
     author:
-      org: W3C
+      - org: W3C
 
 --- abstract
 
@@ -98,7 +98,7 @@ In terms of {{?RFC7667}}, any Point-to-Point or Transport Translator topologies 
 
 # Corruption Detection
 
-*Name:*  “Corruption Detection”; “Extension for Automatic Detection of Video Corruptions”
+*Name:*  "Corruption Detection"; "Extension for Automatic Detection of Video Corruptions"
 
 *Formal name:* http://www.webrtc.org/experiments/rtp-hdrext/corruption-detection
 
@@ -167,7 +167,7 @@ Each sample has gone through a Gaussian filter with the std dev specified above.
 
 ### Synchronization Message
 
-A special case is the so-called “synchronization” message. Such a message only contains the first byte. They are used to keep the sender and receiver in sync even if no “full” message has been received for a while. Such messages MUST NOT be sent on droppable frames.
+A special case is the so-called "synchronization" message. Such a message only contains the first byte. They are used to keep the sender and receiver in sync even if no "full" message has been received for a while. Such messages MUST NOT be sent on droppable frames.
 
 ## Details of Operation
 
@@ -215,14 +215,13 @@ When droppable frames are used (e.g. when using temporal layering), a middle box
 
 This means that the sender MUST NOT add >= 127 consecutive samples to droppable frames, otherwise the most significant bits may come out of sync. 
 
-If needed, a “sync message” can be added to guarantee sequence index alignment even if no samples are available. This is done by sending a truncated message containing just B and the sequence index.
+If needed, a "sync message" can be added to guarantee sequence index alignment even if no samples are available. This is done by sending a truncated message containing just B and the sequence index.
 
 ### Spatial Layer Considerations
 
 When multiple spatial layers are present within a single SSRC, the sender MUST produce a separate and independent stream of corruption detection headers for each spatial layer. This ensures that a receiver can decode and verify the highest spatial layer that is part of the stream they are receiving, and any layers culled by a middlebox does not affect the integrity of e.g. the sequence index series for that layer.
 
-When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit, e.g. the "SxTx" modes in the W3C SVC spec), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
-// TODO: Get the ref to work
+When using a scalability mode where a higher spatial layer uses inter-layer prediction (prediction between frames belonging to the same temporal unit, e.g. the "SxTx" modes in the W3C {{SVC}} spec), then the frame should be treated as a key-frame if any frame in the dependency chain within that temporal layer is a key-frame. 
 
 ### Sample Filtering
 
@@ -258,15 +257,13 @@ For now this header extension is only defined for 4:2:0 chroma subsampling.
 
 In order to translate the row/column calculated from the Halton sequence into a coordinate within a given image plane, visualize the U/V (chroma) planes as being attached to the Y (luma) planes as follows:
 
-   ~~~
-   <
-    +------+---+
-    |      | U |
-    +  Y   +---+
-    |      | V |
-    +------+---+
-    >
-   ~~~
+~~~
++------+---+
+|      | U |
++  Y   +---+
+|      | V |
++------+---+
+~~~
 
 In pseudo code:
 
@@ -283,7 +280,7 @@ In pseudo code:
 
 ### Allowed Error Thresholds
 
-The header extension contains two fields for an “allowed error”; one for the luma channel and one for the chrome channels. The two values allow for accommodating different spatial resolutions and thus different error magnitudes for the respective image planes.
+The header extension contains two fields for an "allowed error"; one for the luma channel and one for the chrome channels. The two values allow for accommodating different spatial resolutions and thus different error magnitudes for the respective image planes.
 
 When calculating the difference between two samples in a receiving client (i.e. one locally filtered sample and the corresponding remote sample from the header extension) the absolute magnitude of the error should be reduced  by the specified amount.
 
@@ -291,11 +288,11 @@ When calculating the difference between two samples in a receiving client (i.e. 
 
 The filter size (std dev of the blur kernel) and the allowed error thresholds SHOULD be set such that 99.5% of filtered samples end up with a delta <= the error threshold for that plane, based on a representative set of test clips and bandwidth constraints.
 
-This text does not put restrictions on how exactly an implementation should determine appropriate thresholds, but a straightforward way is to look at the QP and codec type as this translates roughly the expected compression distortion. Individual implementations may exhibit better or worse performance than an “average” encoder implementation for a given codec type - so a sender is encouraged to compensate for this if the implementation is far outside the expected bounds based on averages.
+This text does not put restrictions on how exactly an implementation should determine appropriate thresholds, but a straightforward way is to look at the QP and codec type as this translates roughly the expected compression distortion. Individual implementations may exhibit better or worse performance than an "average" encoder implementation for a given codec type - so a sender is encouraged to compensate for this if the implementation is far outside the expected bounds based on averages.
 
 ### Calculating A Corruption Score
 
-This text does not put exact requirements on how the differences calculated should be translated into an output. While it is tempting to try and use the 99.5% percentile aspect and use a simple statistical method to estimate the probability of this magnitude of error with a given confidence interval - in practice that has proven tricky due to the number outliers that don’t quite follow a normal distribution.
+This text does not put exact requirements on how the differences calculated should be translated into an output. While it is tempting to try and use the 99.5% percentile aspect and use a simple statistical method to estimate the probability of this magnitude of error with a given confidence interval - in practice that has proven tricky due to the number outliers that don't quite follow a normal distribution.
 
 In practice, it has been found that just taking the sum of all differences squared and dividing by two yields a reasonably good result.
 
